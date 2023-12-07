@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional
+
 class SignUpModel(BaseModel):
     id: Optional[int]
     user_name: str 
@@ -19,3 +20,12 @@ class SignUpModel(BaseModel):
                 'is_activate': True 
             }
         }
+
+
+class Settings(BaseModel):
+    authjwt_secret_key:str = '1c869dd3c47764cb0cfbd0b2818ea3efcea1a330d17cdff0b28e00c66111b45c'
+
+
+class LoginModel(BaseModel):
+    user_name:str 
+    password:str 
