@@ -18,7 +18,7 @@ class User(Base):
         return f'<User {self.user_name}'
 
 
-class Order(Base):
+class Orders(Base):
     
     ORDER_STATUSES = (
         ('PENDING', 'pending'), 
