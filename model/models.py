@@ -37,11 +37,6 @@ class Orders(Base):
     quantity = Column(Integer, nullable=True)
     order_status = Column(ChoiceType(choices=ORDER_STATUSES), default='PENDING')
     pizza_size = Column(ChoiceType(choices=PIZZA_SIZE), default='SMALL')
-    
-    flavour = Column(String(25), unique=True)
-    password = Column(Text, nullable=True)
-    is_staff = Column(Boolean, default=False)
-    is_activate = Column(Boolean, default=False) 
     user_id = Column(Integer, ForeignKey('user.id'))
     user=relationship('User', back_populates='orders')
     
