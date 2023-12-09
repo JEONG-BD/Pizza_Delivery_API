@@ -32,6 +32,8 @@ class Orders(Base):
         ('LARGE', 'large'), 
         ('EXTRA-LARGE', 'extra-large')
     )
+    
+    
     __tablename__ = 'orders'
     id = Column(Integer, primary_key=True)
     quantity = Column(Integer, nullable=True)

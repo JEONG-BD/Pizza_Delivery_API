@@ -46,3 +46,16 @@ class OrderModel(BaseModel):
                 'pizza_size': 'SMALL'
             }
         }
+
+
+class OrderStatusModel(BaseModel):
+    order_status: Optional[str] = 'PENDING'
+    
+    class Config : 
+        orm_mode = True, 
+        schema_extra = {
+            'example': {
+                'order_status': 'PENDING'
+            }    
+        }
+        
