@@ -20,8 +20,10 @@ async def order_test():
 
 
 @order_router.get('/')
-async def hello(Authorize: AuthJWT=Depends()):
-
+async def order_test(Authorize: AuthJWT=Depends()):
+    """
+        ## A order test route   
+    """
     try:
         Authorize.jwt_required()
     except Exception as ex:
@@ -34,8 +36,11 @@ async def hello(Authorize: AuthJWT=Depends()):
     }
 
 
-@order_router.post('/order')
+@order_router.post('/')
 async def place_an_order(order: OrderModel, Authorize: AuthJWT=Depends()):
+    """
+        ## A order insert route  
+    """
     try:
         Authorize.jwt_required()
     except Exception as ex:
@@ -45,9 +50,9 @@ async def place_an_order(order: OrderModel, Authorize: AuthJWT=Depends()):
         )
 
     current_user = Authorize.get_jwt_subject()    
-    print(current_user)
+
     user = session.query(User).filter(User.user_name == current_user).first()
-    print(user)
+
     new_order = Orders(
         pizza_size = order.pizza_size,
         quantity = order.quantity
@@ -94,7 +99,7 @@ async def list_all_orders(Authorize:AuthJWT=Depends()):
     )
     
 
-@order_router.get('/orders/{id}')
+@order_router.get('/{id}')
 async def get_order_by_id(id:int, Authorize:AuthJWT=Depends()):
     try:
         Authorize.get_jwt_subject()
@@ -104,9 +109,6 @@ async def get_order_by_id(id:int, Authorize:AuthJWT=Depends()):
             detail = 'Invalid Token'
         ) 
     user = Authorize.get_jwt_subject()
-    print('*'*30)
-    print(user, type(user))
-    print('*'*30)
     
     current_user = session.query(User).filter(User.user_name == user).first()
     
@@ -121,7 +123,7 @@ async def get_order_by_id(id:int, Authorize:AuthJWT=Depends()):
     )
     
 
-@order_router.get('/user/orders')
+@order_router.get('/user/')
 async def get_order_by_user(Authorize : AuthJWT = Depends()):
     try:
         Authorize.jwt_required()
@@ -139,7 +141,7 @@ async def get_order_by_user(Authorize : AuthJWT = Depends()):
     return jsonable_encoder(current_user.orders)
 
 
-@order_router.get('/user/orders/{order_id}')
+@order_router.get('/user/{order_id}')
 async def get_specific_user(order_id: int, Authorize: AuthJWT = Depends()):
     try:
         Authorize.jwt_required()
@@ -167,7 +169,7 @@ async def get_specific_user(order_id: int, Authorize: AuthJWT = Depends()):
     )
 
 
-@order_router.put('/update/{order_id}')
+@order_router.put('/update/orders/{order_id}')
 async def update_order(order_id: int, order: OrderModel, Authorize: AuthJWT = Depends()):
     try :
         Authorize.jwt_required()
@@ -194,7 +196,7 @@ async def update_order(order_id: int, order: OrderModel, Authorize: AuthJWT = De
     return jsonable_encoder(order_db)
 
 
-@order_router.put('/order/update/{order_id}')
+@order_router.put('/update/status/{order_id}')
 async def update_order_status(order_id: int, order: OrderStatusModel, Authorize: AuthJWT=Depends()):
     try:
         Authorize.jwt_required()
