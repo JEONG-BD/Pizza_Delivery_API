@@ -21,6 +21,7 @@ async def order_test():
 
 @order_router.get('/')
 async def hello(Authorize: AuthJWT=Depends()):
+
     try:
         Authorize.jwt_required()
     except Exception as ex:
@@ -219,3 +220,26 @@ async def update_order_status(order_id: int, order: OrderStatusModel, Authorize:
         status_code = status.HTTP_400_BAD_REQUEST, 
         detail = 'You are not a staff'
     )
+
+@order_router.delete('/delete/{order_id}', status_code = status.HTTP_204_NO_CONTENT)
+async def delete_order(order_id: int, Authorize: AuthJWT = Depends()):
+    try:
+        Authorize.jwt_required() 
+    except Exception as ex:
+        raise HTTPException(
+            status_code = status.HTTP_401_UNAUTHORIZED, 
+            detail = 'Invalid Token'
+        ) 
+    
+    order_db = session.query(Orders).filter(Orders.id == order_id).first()
+    
+    if not order_db : 
+        raise HTTPException(
+            status_code = status.HTTP_400_BAD_REQUEST, 
+            detail = 'No order with search id' 
+        ) 
+    
+    session.delete(order_db)
+    session.commit()
+    
+    return jsonable_encoder(order_db)
